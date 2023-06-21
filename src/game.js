@@ -5,6 +5,8 @@ export class Game {
         this.app = new Application({
             width: 500,
             height: 700,
+            width: GameConstant.GAME_WIDTH,
+            height: GameConstant.GAME_HEIGHT,
             backgroundColor: 0x1099bb,
         });
         document.body.appendChild(this.app.view);
