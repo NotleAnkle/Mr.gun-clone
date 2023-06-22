@@ -14,35 +14,56 @@ export class Map extends Container{
         this.sortableChildren = true;
         this.color = this.randomColor();
         this.stairs = [];
-        this.stairs = this.genStairs();
-        // this.ticker = Ticker.shared;
-        // this.ticker.add(this.update, this);
+        this.genStairs();
+        this.speech = 0.5;
+        this.ticker = Ticker.shared;
+        this.ticker.add(this.update, this);
     }
-    // update(delta){
-    //     console.log(this.stairs.length);
-    // }
+    update(delta){
+        if(this.moveDistance > 0){
+            this.y += this.speech;
+            this.moveDistance -= this.speech;
+        }
+    }
     genStairs(){
-        this.stairs.push(new Stair(this.x, this.y+ 400, this, -1, 0, 2))
+        this.stairs.push(new Stair(this.x, this.y+ 400, 0, this, -1, 2))
+        this.currentIndex = -1;
         for(let i = 1; i < 8; i++){
             this.genNewStair();
         }
     }
     genNewStair(){
         const previousStair = this.stairs[this.stairs.length - 1];
-        const stepNumber = Math.floor(Math.random()*3 + 2);
+        const stepNumber = Math.floor(Math.random()*2 + 3);
         const dir = previousStair.direction == 1 ? -1 : 1;
         const y = previousStair.y - stepNumber* GameConstant.Step_Size;
         const z = previousStair.zIndex - 1;
-        this.stairs.push(new Stair(this.x, y ,this, dir, z, stepNumber))
+        this.stairs.push(new Stair(this.x, y , z, this, dir, stepNumber))
+    }
+    nextStair() {
+        const nextIndex = (this.currentIndex + 1) % this.stairs.length;
+        
+        this.currentIndex = nextIndex;
+
+        this.genNewStair();
+        this.moveDistance = this.stairs[this.currentIndex].stepNumber*25;
+        if(this.currentIndex > 3){
+            for(let i = this.currentIndex - 3; i < this.currentIndex+5; i++){
+            const alpha = 0.3 + (i - this.currentIndex)/10;
+            this.stairs[i].updateShade(alpha);
+            }
+            this.parent.removeChild(this.stairs[this.currentIndex-1])
+        }
+        return(this.stairs[this.currentIndex]);
     }
     convertToHex(colorValue) {
         const hex = colorValue.toString(16);
         return hex.length === 1 ? "0" + hex : hex;
     }
     randomColor() {
-        const red = Math.floor(Math.random() * 200);
-        const green = Math.floor(Math.random() * 200);
-        const blue = Math.floor(Math.random() * 200);
+        const red = Math.floor(Math.random() * 200) + 50 ;
+        const green = Math.floor(Math.random() * 200) ;
+        const blue = Math.floor(Math.random() * 150 + 100);
 
         const color = "#" + this.convertToHex(red) + this.convertToHex(green) + this.convertToHex(blue);
         

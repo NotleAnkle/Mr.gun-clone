@@ -2,7 +2,7 @@ import { Container, Graphics, RenderTexture, Sprite } from "pixi.js";
 import { GameConstant } from "../../gameConstant";
 
 export class Stair extends Container{
-    constructor(x, y ,parent, direction, z, stepNumber){
+    constructor(x, y , z, parent, direction, stepNumber){
         super();
         this.x = x;
         this.y = y;
@@ -25,17 +25,26 @@ export class Stair extends Container{
     _initSprite(){
         this.graphics.lineStyle(1, this.color);
         this.graphics.beginFill(this.color);
-        this.drawRect();
+        this.sprite = this.drawStair();
+        this.addChild(this.sprite);
     }
     _initShade(){
         this.graphics.beginFill("#000000");
         this.graphics.alpha = (-this.zIndex/10);
-        this.drawRect();
+        this.shade =  this.drawStair();
+        this.addChild(this.shade);
     }
-    drawRect(){
+    updateShade(alpha){
+        this.graphics.beginFill("#000000");
+        this.graphics.alpha = (alpha);
+        this.removeChild(this.shade);
+        this.shade =  this.drawStair();
+        this.addChild(this.shade);
+    }
+    drawStair(){
         const size = GameConstant.Step_Size;
         for (let i = 0; i < this.stepNumber; i++) {
-            this.graphics.drawRect(0, + i*size, size * (i + 1) + this.stepNumber*25*2, size);
+            this.graphics.drawRect(0, + i*size, size * (i + 1) + this.stepNumber*size*2, size);
         }
         this.graphics.drawRect(0, this.stepNumber * size, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT - this.y + this.stepNumber * size);
         const texture = this.app.renderer.generateTexture(this.graphics);
@@ -46,6 +55,6 @@ export class Stair extends Container{
             sprite.scale.x = -1;
         }
         this.graphics.clear();
-        this.addChild(sprite);
+        return sprite;
     }
 }
