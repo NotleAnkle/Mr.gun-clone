@@ -7,8 +7,6 @@ export class Gun extends Container{
         this.app = parent.app;
         this.y = 30;
         this._init();
-        
-        this._initAimBar();
     }
     _init(){
         this.parent.addChild(this);
@@ -21,39 +19,31 @@ export class Gun extends Container{
         this.currentAnlge = 0;
         this.maxAngle = 45;
         this.radius = 100;
+        this.speech = 0.2;
         this.isIncresing = true;
         this.ticker = Ticker.shared;
         this.ticker.add(this.update, this);
     }
-    _initAimBar(){
-        this.aimBar = 1;
-        this.drawCircularSector(45);
-
-    }
-    drawCircularSector(angle) {
-        const startAngle = Math.PI; // Góc bắt đầu (rad)
-        const endAngle = (Math.PI + angle * (Math.PI / 180)); // Góc kết thúc (rad)
-        
-        this.graphics.alpha = 0.2;
-        this.graphics.beginFill(0xFFFFFF);
-        this.graphics.arc(0, 0, this.radius, startAngle, endAngle, false);
-        this.graphics.lineTo(0, 0);
-        this.graphics.closePath();
-
-      }
     update(delta){
         this.flip();
         this.x = 10*this.parent.direction;
+        if(!this.parent.isMoving){
+            this.drawAimBar();
+        }
+        else this.graphics.clear();
+        this.sprite.angle = this.parent.direction == -1 ? this.currentAnlge : -this.currentAnlge
+    }
+    drawAimBar(){
         if(this.isIncresing){
-            console.log("đang cộng", this.currentAnlge, this.maxAngle);
-            if(this.currentAngle  < this.maxAngle){
-                this.currentAngle += 0.1;
+            
+            if(this.currentAnlge  < this.maxAngle){
+                this.currentAnlge += this.speech;
             }
             else this.isIncresing = false;
         }
         else {
-            if(this.currentAngle  > 0){
-                this.currentAngle -= 0.1;
+            if(this.currentAnlge  > 0){
+                this.currentAnlge -= this.speech;
             }
             else this.isIncresing = true;
         }
@@ -62,8 +52,23 @@ export class Gun extends Container{
         // }
         // else this.currentAngle = 0;
         this.graphics.clear();
-        this.drawCircularSector(this.currentAngle);
+        this.drawCircularSector(this.currentAnlge);
     }
+    drawCircularSector(angle) {
+        let startAngle = Math.PI; 
+        let endAngle = (Math.PI + angle * (Math.PI / 180));
+        if(this.parent.direction == 1){
+            startAngle = 2*Math.PI - angle * (Math.PI / 180); 
+            endAngle = 2*Math.PI;
+        }
+        
+        this.graphics.alpha = 0.2;
+        this.graphics.beginFill(0xFFFFFF);
+        this.graphics.arc(0, 0, this.radius, startAngle, endAngle, false);
+        this.graphics.lineTo(0, 0);
+        this.graphics.closePath();
+
+      }
     flip(){
         this.sprite.scale.x = this.parent.direction == 1 ? 1 : -1;
     }
