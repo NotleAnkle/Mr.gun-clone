@@ -1,4 +1,4 @@
-import { Container, Graphics, Sprite, Ticker } from "pixi.js";
+import { Assets, Container, Graphics, Sprite, Ticker } from "pixi.js";
 import { GameConstant } from "../../gameConstant";
 import { Gun } from "./gun";
 
@@ -22,7 +22,7 @@ export class Player extends Container {
         this.ticker.add(this.update, this);
     }
     _initGun(){
-        this.gun = new Gun(this);
+        this.gun = new Gun(this, 100, 0.2, 5);
     }
     _initAbility(){
         this.x = GameConstant.GAME_WIDTH/2;
@@ -30,6 +30,7 @@ export class Player extends Container {
         this.zIndex = 1;
         this.direction = -1;
         this.speech = 2;
+        this.isMoving = false;
         this.needFlip = false;
         this.canJump = true;
         this.isJumping = false;
@@ -45,6 +46,7 @@ export class Player extends Container {
 
     move() {
         if (this.path2 > 0) {
+            this.isMoving = true;
             if (this.path1 > 0) {
                 this.path1 -= this.speech;
             } else {
@@ -61,10 +63,13 @@ export class Player extends Container {
                 }
             }
             this.x += this.direction * this.speech;
-        } else if (this.needFlip) {
+        } else{
+            this.isMoving = false;
+            if (this.needFlip) {
             this.flip();
             this.needFlip = false;
-        }
+            }
+        } 
     }
     
     jump() {
@@ -99,15 +104,18 @@ export class Player extends Container {
         this.direction = this.direction == 1 ? -1 : 1;
     }
     drawBody(){
-        this.graphics.lineStyle(1, 0x000000)
-        this.graphics.beginFill(0xFFFFFF)
-        this.graphics.drawRect(0,0, 25, 25)
-        this.graphics.beginFill(0x00AA00)
-        this.graphics.drawRect(0,25, 25, 30)
-        // this.graphics.drawRect(20,25, 20, 2)
-        const texture = this.app.renderer.generateTexture(this.graphics);
-        const sprite = new Sprite(texture);
-        this.graphics.clear();
+        // this.graphics.lineStyle(1, 0x000000)
+        // this.graphics.beginFill(0xFFFFFF)
+        // this.graphics.drawRect(0,0, 25, 25)
+        // this.graphics.beginFill(0x00AA00)
+        // this.graphics.drawRect(0,25, 25, 30)
+        // // this.graphics.drawRect(20,25, 20, 2)
+        // const texture = this.app.renderer.generateTexture(this.graphics);
+        // const sprite = new Sprite(texture);
+        // this.graphics.clear();
+
+        const sprite = Sprite.from(Assets.get('camouflage'))
+
         return sprite;
     }
 }
