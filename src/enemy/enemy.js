@@ -1,36 +1,14 @@
-import { Container, Graphics, Sprite } from "pixi.js";
+import { Assets, Container, Graphics, Sprite, Ticker } from "pixi.js";
 import { Weapon } from "../weapon/weapon";
 
 export class Enemy extends Container{
-    constructor(x, y, speed, texture){
+    constructor(x, y){
         super();
         this.position.set(x, y);
-        this.speed = speed;
-        this.drawHead();
-        this.drawBody();
-        this.addChild(this.head, this.body);
-        console.log(this.getBounds());
+        this.weapon = new Weapon(Assets.get('usp-s'));
+        this.ticker = Ticker.shared;
+        this.ticker.add(this.update, this);
     }
-    drawHead(){
-        this.head = new Graphics();
-        this.head.beginFill(0xffffff); //white
-        this.head.drawRect(0, 0, 40, 30);
-        this.head.endFill();
-    }
-    drawBody(){
-        this.body = new Graphics();
-        this.body.beginFill(0xFF0000); //red
-        this.body.drawRect(5, 30, 30, 40);
-        this.body.endFill();
-    }
-    equipWeapon(weapon){
-        this.weapon = weapon;
-        this.weapon.x = this.width / 2;
-        this.weapon.y = this.height / 2;
-        console.log(this.weapon.position);
-        this.addChild(this.weapon);
-    }
-    update(){
-
+    update(dt){
     }
 }

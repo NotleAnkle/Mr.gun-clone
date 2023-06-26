@@ -3,6 +3,9 @@ import { AssetLoader } from "./AssetLoader";
 import { Enemy } from "./enemy/enemy";
 import { Weapon } from "./weapon/weapon";
 import { manifest } from "./bundle/manifest";
+import { ShortSkinnyEnemy } from "./enemy/short_skinny_enemy";
+import { ShortFatEnemy } from "./weapon/short_fat_enemy";
+import { TallEnemy } from "./weapon/tall_enemy";
 
 export class Game {
     static init() {
@@ -20,13 +23,13 @@ export class Game {
         this.gamePlay = new Container();
         this._loadGameAssets().then((asset)=> {
             console.log(asset['gun']['ak']);
-            const test = new Enemy(500, 200, 3);
-            const weapon = new Weapon(asset['gun']['ak']);
-            test.equipWeapon(weapon);
+            const test = new ShortSkinnyEnemy(700, 200, -1);
+            const weapon = new Weapon(asset['gun']['usp-s']);
+            // test.equipWeapon(weapon);
             this.gamePlay.addChild(test);
-            // this.gamePlay.addChild(weapon);
             
             this.app.stage.addChild(this.gamePlay);
+            this.app.ticker.add(this.update, this);
             // console.log(tex);
         });
         // test.then(() => {
@@ -62,15 +65,10 @@ export class Game {
     }
 
     static update(dt) {
-        Physics.update(dt);
-        this.playScene.update(dt);
+        
     }
 }
 
 window.onload = function () {
     Game.init();
 }
-
-window.addEventListener("resize", (event) => {
-    Game.resize(window.innerWidth, window.innerHeight)
-});
