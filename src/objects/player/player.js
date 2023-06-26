@@ -3,26 +3,25 @@ import { GameConstant } from "../../gameConstant";
 import { Gun } from "./gun";
 
 export class Player extends Container {
-    constructor(parent, app){
+    constructor(parent){
         super();
         this.parent = parent;
-        this.app = app;
         this._initAbility();
         this._initCharacter();
         this._initGun();
     }
     _initCharacter(){
         this.parent.addChild(this);
-        this.graphics = new Graphics();
-        this.addChild(this.graphics);
-        this.sprite = this.drawBody();
+        this.sortableChildren = true;
+        this.sprite = Sprite.from(Assets.get('camouflage'))
         this.sprite.anchor.set(0.5, 0);
         this.addChild(this.sprite);
         this.ticker = Ticker.shared;
         this.ticker.add(this.update, this);
     }
     _initGun(){
-        this.gun = new Gun(this, 100, 0.2, 5);
+        this.gun = new Gun(this, 'aug');
+        this.gun.zIndex = 1;
     }
     _initAbility(){
         this.x = GameConstant.GAME_WIDTH/2;
@@ -41,19 +40,23 @@ export class Player extends Container {
     }
     update(delta){
         this.move();
+        this.gun.update();
         this.sprite.scale.x = this.direction === 1 ? 1 : -1
     }
 
     move() {
+        // Còn đoạn đường thứ 2 chưa đi thì tiếp tục di chuyển
         if (this.path2 > 0) {
-            this.isMoving = true;
+            this.isMoving = true; // biến này hiện tại chưa sử dụng sau này để thêm đk cho player không thể bắn khi đang di chuyển
             if (this.path1 > 0) {
+                // Đi đoạn đường thứ 1 trước
                 this.path1 -= this.speech;
             } else {
+                //Sau khi đi xong thì bắt đầu nhảy
                 if (this.jumpStep > 0) {
                     if (this.canJump && !this.isJumping) {
-                        this.isJumping = true;
-                        this.canJump = false;
+                        this.isJumping = true; // biến thể hiện đang nhảy
+                        this.canJump = false; // biến thể hiện rằng nhân vật sẵn sàng đê nhảy
                         this.minY = this.y - 25;
                         this.jumpForce = this.maxJumpForce; // Reset jump force when starting a new jump
                     }
@@ -103,19 +106,15 @@ export class Player extends Container {
     flip(){
         this.direction = this.direction == 1 ? -1 : 1;
     }
-    drawBody(){
-        // this.graphics.lineStyle(1, 0x000000)
-        // this.graphics.beginFill(0xFFFFFF)
-        // this.graphics.drawRect(0,0, 25, 25)
-        // this.graphics.beginFill(0x00AA00)
-        // this.graphics.drawRect(0,25, 25, 30)
-        // // this.graphics.drawRect(20,25, 20, 2)
-        // const texture = this.app.renderer.generateTexture(this.graphics);
-        // const sprite = new Sprite(texture);
-        // this.graphics.clear();
-
-        const sprite = Sprite.from(Assets.get('camouflage'))
-
-        return sprite;
+    changeClothes(name){
+        this.removeChild(this.sprite);
+        this.sprite = Sprite.from(Assets.get(name));
+        this.sprite.zIndex = 0;
+        this.sprite.anchor.set(0.5, 0);
+        this.addChild(this.sprite);
+    }
+    changeGun(name){
+        this.removeChild(this.gun);
+        this.gun = new Gun(this, name);
     }
 }

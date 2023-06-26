@@ -2,33 +2,39 @@ import { Assets, Container, Graphics, Sprite, Ticker } from "pixi.js";
 import { Bullet } from "./bullet";
 
 export class Gun extends Container{
-    constructor(parent, radius, speech, damage){
+    constructor(parent, name){
         super();
         this.parent = parent;
         this.y = 30;
-        this.radius = radius;
-        this.speech = speech;
-        this.damage = damage;
+        this.name = name;
         this._init();
     }
     _init(){
+        this.sortableChildren = true;
         this.graphics = new Graphics();
         this.addChild(this.graphics);
         this.parent.addChild(this);
-        // this.sprite = Sprite.from("../../../assets/images/guns/1_1.png")
-        this.sprite = Sprite.from(Assets.get('ak'));
+        this.sprite = Sprite.from(Assets.get(this.name));
         this.addChild(this.sprite);
         this.sprite.anchor.set(0.5);
+        this.sprite.zIndex = 2;
+
+        const gunData = Assets.get("gunData")
+
+        this.type = gunData[this.name].type;
+        this.radius = gunData[this.name].radius;
+        this.speech = gunData[this.name].speech;
+        this.damage = gunData[this.name].damage;
+        this.bulletRadius = gunData[this.name].bulletRadius;
+        this.bulletNumber = gunData[this.name].bulletNumber;
+        this.bulletSpeech = gunData[this.name].bulletSpeech
+        this.deviation = gunData[this.name].deviation;
 
         this.currentAnlge = 0;
         this.maxAngle = 45;
-        // this.radius = 100;
-        // this.speech = 0.2;
         this.isIncresing = true;
         this.isShot = false;
         this.bullets = [];
-        this.ticker = Ticker.shared;
-        this.ticker.add(this.update, this);
     }
     update(delta){
         this.flip();
@@ -83,7 +89,9 @@ export class Gun extends Container{
         this.sprite.scale.x = this.parent.direction == 1 ? 1 : -1;
     }
     shoot(){
-        this.bullets.push(new Bullet(this));
+        for(let i = 0; i < this.bulletNumber; i++){
+            this.bullets.push(new Bullet(this));    
+        }
         this.isShot = true;
     }
 }

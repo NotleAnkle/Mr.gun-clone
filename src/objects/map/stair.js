@@ -18,18 +18,20 @@ export class Stair extends Container{
         this.color = this.parent.color;
         this.graphics = new Graphics();
         this.addChild(this.graphics);
-        this._initSprite();
+        this._initSprite(); 
         this._initShade();
     }
 
     _initSprite(){
+        this.stairSprites = [];
         this.graphics.lineStyle(1, this.color);
         this.graphics.beginFill(this.color);
-        this.sprite = this.drawStair();
-        this.addChild(this.sprite);
+        this.sprite = this.createStair();
+        // this.addChild(this.sprite);
     }
     _initShade(){
         this.graphics.beginFill("#000000");
+        this.graphics.lineStyle(0);
         this.graphics.alpha = (-this.zIndex/10);
         this.shade =  this.drawStair();
         this.addChild(this.shade);
@@ -56,5 +58,25 @@ export class Stair extends Container{
         }
         this.graphics.clear();
         return sprite;
+    }
+    createStair(){
+        const size = GameConstant.Step_Size;
+
+        for (let i = 0; i < this.stepNumber; i++) {
+            const graphic = new Graphics(); 
+            this.addChild(graphic);
+            graphic.lineStyle(1, this.color);
+            graphic.beginFill(this.color);
+            const x = this.direction == -1 ? 0 : GameConstant.GAME_WIDTH - (size * (i + 1) + this.stepNumber*size*2);
+            graphic.drawRect(x,i*size, size * (i + 1) + this.stepNumber*size*2, size);
+            this.stairSprites.push(graphic);
+
+        }
+        const graphic = new Graphics(); 
+        this.addChild(graphic);
+        graphic.lineStyle(1, this.color);
+        graphic.beginFill(this.color);
+        graphic.drawRect(0, this.stepNumber * size, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT - this.y + this.stepNumber * size);
+        this.stairSprites.push(graphic);
     }
 }

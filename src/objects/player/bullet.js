@@ -11,25 +11,39 @@ export class Bullet extends Container{
         this.parent.addChild(this);
         this.graphics = new Graphics();
         this.addChild(this.graphics);
-        // this.ticker = Ticker.shared;
-        // this.ticker.add(this.update, this)
 
-        this.direction = this.parent.parent.direction
-        this.beta = this.direction == -1 ? this.parent.currentAnlge : Math.PI - this.parent.currentAnlge
-        this.speech = 2;
+        this.h = 0; // độ dài đường đi viên đạn đã đi được
+        this.direction = this.parent.parent.direction // hướng bắn
+        this.beta = this.direction == -1 ? this.parent.currentAnlge : Math.PI - this.parent.currentAnlge // góc lệch của đạn
+        this.speech = this.parent.bulletSpeech; // tốc độ bay
+        this.deviation = this.parent.deviation; // độ lệch của đạn 
+        const randomValue = Math.random() * (2 * this.deviation) - this.deviation;
+        this.type = this.parent.type; // kiểu bắn
+        switch (this.type) {
+            case "rapid":
+                this.x += randomValue * this.direction / 5;
+                this.y += randomValue;
+                break;
+            case "shotgun":
+                this.beta += randomValue;
+                break;
+            default:
+                break;
+        }
     }
     update(delta){
         if(this.destroyed){
             return;
         }
-        this.x += this.speech* this.direction;
-        this.y = this.x * Math.tan(this.beta*Math.PI/180)
+        const realSpeech = this.speech* this.direction;
+        this.x += realSpeech*Math.cos(this.beta*Math.PI/180);
+        this.y += realSpeech * Math.sin(this.beta*Math.PI/180)
         this.drawBullet();
     }
     drawBullet(){
         this.graphics.clear();
         this.graphics.beginFill(0xFFFFFF)
-        this.graphics.drawCircle(this.x, this.y, 5);
+        this.graphics.drawCircle(this.x, this.y, this.parent.bulletRadius);
     }
 
     destroy(){
