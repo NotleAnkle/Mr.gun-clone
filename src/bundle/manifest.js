@@ -5,6 +5,10 @@ export const manifest = {
             assets: [
                 //gun
                 {
+                    name: 'gunData',
+                    srcs: '/assets/json/data.json'
+                },
+                {
                     name: 'ak',
                     srcs: '/assets/images/guns/ak.png'
                 },
@@ -13,8 +17,8 @@ export const manifest = {
                     srcs: '/assets/images/guns/aug.png'
                 },
                 {
-                    name: 'desert-eagle',
-                    srcs: '/assets/images/guns/desert-eagle.png'
+                    name: 'desert_eagle',
+                    srcs: '/assets/images/guns/desert_eagle.png'
                 },
                 {
                     name: 'mp5',
@@ -29,16 +33,16 @@ export const manifest = {
                     srcs: '/assets/images/guns/r8.png'
                 },
                 {
-                    name: 'sawed-off',
-                    srcs: '/assets/images/guns/sawed-off.png'
+                    name: 'sawed_off',
+                    srcs: '/assets/images/guns/sawed_off.png'
                 },
                 {
                     name: 'scout',
                     srcs: '/assets/images/guns/scout.png'
                 },
                 {
-                    name: 'usp-s',
-                    srcs: '/assets/images/guns/usp-s.png'
+                    name: 'usp_s',
+                    srcs: '/assets/images/guns/usp_s.png'
                 }
             ]
         },

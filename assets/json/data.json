@@ -1,0 +1,36 @@
+{
+    "ak":
+        {
+            "radius": 100,
+            "speech": 0.2,
+            "type": "rapid",
+            "bulletNumber": 3,
+            "bulletRadius": 3,
+            "bulletSpeech": 2,
+            "deviation": 10,
+            "damage": 5
+        },
+        "sawed_off":
+        {
+            "radius": 50,
+            "speech": 0.2,
+            "type": "shotgun",
+            "bulletNumber": 5,
+            "bulletRadius": 2,
+            "bulletSpeech": 2,
+            "deviation": 15,
+            "damage": 10
+        },
+    "aug":
+        {
+            "radius": 80,
+            "speech": 0.4,
+            "type": "singer",
+            "bulletNumber": 1,
+            "bulletRadius": 2, 
+            "bulletSpeech": 3,
+            "deviation": 5,
+            "damage": 10
+        }
+    
+}
