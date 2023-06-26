@@ -12,7 +12,6 @@ export class Bullet extends Container{
         this.graphics = new Graphics();
         this.addChild(this.graphics);
 
-        this.h = 0; // độ dài đường đi viên đạn đã đi được
         this.direction = this.parent.parent.direction // hướng bắn
         this.beta = this.direction == -1 ? this.parent.currentAnlge : Math.PI - this.parent.currentAnlge // góc lệch của đạn
         this.speech = this.parent.bulletSpeech; // tốc độ bay
@@ -21,8 +20,9 @@ export class Bullet extends Container{
         this.type = this.parent.type; // kiểu bắn
         switch (this.type) {
             case "rapid":
-                this.x += randomValue * this.direction / 5;
-                this.y += randomValue;
+                this.x -= randomValue*Math.cos(this.beta*Math.PI/180) * 2;
+                this.y -= randomValue * Math.sin(this.beta*Math.PI/180)  ;
+                // this.beta += randomValue/5;
                 break;
             case "shotgun":
                 this.beta += randomValue;
@@ -39,6 +39,7 @@ export class Bullet extends Container{
         this.x += realSpeech*Math.cos(this.beta*Math.PI/180);
         this.y += realSpeech * Math.sin(this.beta*Math.PI/180)
         this.drawBullet();
+
     }
     drawBullet(){
         this.graphics.clear();

@@ -28,7 +28,7 @@
             "type": "singer",
             "bulletNumber": 1,
             "bulletRadius": 2, 
-            "bulletSpeech": 3,
+            "bulletSpeech": 4,
             "deviation": 5,
             "damage": 10
         }

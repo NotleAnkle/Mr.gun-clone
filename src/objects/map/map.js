@@ -52,7 +52,7 @@ export class Map extends Container{
             const alpha = 0.3 + (i - this.currentIndex)/10;
             this.stairs[i].updateShade(alpha);
             }
-            this.parent.removeChild(this.stairs[this.currentIndex-1])
+            this.parent.removeChild(this.stairs[this.currentIndex-4])
         }
         return(this.stairs[this.currentIndex]);
     }

@@ -57,7 +57,7 @@ export class Player extends Container {
                     if (this.canJump && !this.isJumping) {
                         this.isJumping = true; // biến thể hiện đang nhảy
                         this.canJump = false; // biến thể hiện rằng nhân vật sẵn sàng đê nhảy
-                        this.minY = this.y - 25;
+                        this.minY = this.y - GameConstant.Step_Size;
                         this.jumpForce = this.maxJumpForce; // Reset jump force when starting a new jump
                     }
                     this.jump();
@@ -67,11 +67,11 @@ export class Player extends Container {
             }
             this.x += this.direction * this.speech;
         } else{
-            this.isMoving = false;
             if (this.needFlip) {
             this.flip();
             this.needFlip = false;
             }
+            this.isMoving = false;
         } 
     }
     
