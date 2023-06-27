@@ -18,11 +18,15 @@ export class Bullet extends Container{
         this.deviation = this.parent.deviation; // độ lệch của đạn 
         const randomValue = Math.random() * (2 * this.deviation) - this.deviation;
         this.type = this.parent.type; // kiểu bắn
+
+        this.x +=  this.direction*this.parent.sprite.width/4*Math.cos(this.beta*Math.PI/180);
+        this.y +=  this.direction*this.parent.sprite.width/4*Math.sin(this.beta*Math.PI/180);
+
         switch (this.type) {
             case "rapid":
-                this.x -= randomValue*Math.cos(this.beta*Math.PI/180) * 2;
-                this.y -= randomValue * Math.sin(this.beta*Math.PI/180)  ;
-                // this.beta += randomValue/5;
+                this.x -= randomValue*Math.cos(this.beta*Math.PI/180) ;
+                this.y -= randomValue * Math.sin(this.beta*Math.PI/180) ; 
+                this.beta += randomValue / 5;
                 break;
             case "shotgun":
                 this.beta += randomValue;

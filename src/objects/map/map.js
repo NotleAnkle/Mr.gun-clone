@@ -53,6 +53,7 @@ export class Map extends Container{
             this.stairs[i].updateShade(alpha);
             }
             this.parent.removeChild(this.stairs[this.currentIndex-4])
+            this.stairs[this.currentIndex-4].destroy();
         }
         return(this.stairs[this.currentIndex]);
     }

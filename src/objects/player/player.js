@@ -61,7 +61,7 @@ export class Player extends Container {
                         this.jumpForce = this.maxJumpForce; // Reset jump force when starting a new jump
                     }
                     this.jump();
-                } else {
+                } else { 
                     this.path2 -= this.speech;
                 }
             }
@@ -70,8 +70,10 @@ export class Player extends Container {
             if (this.needFlip) {
             this.flip();
             this.needFlip = false;
-            }
             this.isMoving = false;
+            this.gun.isShot = false;
+            }
+            
         } 
     }
     
@@ -107,6 +109,7 @@ export class Player extends Container {
         this.direction = this.direction == 1 ? -1 : 1;
     }
     changeClothes(name){
+        this.sprite.destroy();
         this.removeChild(this.sprite);
         this.sprite = Sprite.from(Assets.get(name));
         this.sprite.zIndex = 0;
@@ -114,6 +117,7 @@ export class Player extends Container {
         this.addChild(this.sprite);
     }
     changeGun(name){
+        this.gun.destroy();
         this.removeChild(this.gun);
         this.gun = new Gun(this, name);
     }

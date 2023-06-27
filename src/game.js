@@ -14,7 +14,7 @@ export class Game {
         const viewStyle = this.app.view.style;
         viewStyle.position = "absolute";
         viewStyle.display = "block";
-        viewStyle.padding = "0px 300px";
+        viewStyle.padding = "0px 300px"; 
 
         this._loadGameAssets().then((asset)=> {
 

@@ -24,12 +24,12 @@ export class PlayScene extends Container{
         document.body.addEventListener("keydown", (event) => {
             if (event.code === "Space") {
                 // this.player.calPath(this.map.nextStair());
-                this.player.changeClothes("cowboy");
-                this.player.changeGun("sawed_off");
+                this.player.changeClothes("hitman");
+                this.player.changeGun("scout");
             }
         });
         this.on("pointerdown", () => {
-            this.player.gun.shoot()
+            if(!this.player.gun.isShot)this.player.gun.shoot()
         })
     }
     update(dt) {
@@ -74,10 +74,9 @@ export class PlayScene extends Container{
         this.enemy.destroy();
         const currenStair = this.map.stairs[this.map.currentIndex+2];
         const size = GameConstant.Step_Size;
-        this.enemy = new Enemy(this.player.direction == -1 ? GameConstant.GAME_WIDTH - currenStair.stepNumber*size  : currenStair.stepNumber*size, currenStair.y - 70, 1);
+        this.enemy = new Enemy(this.player.direction == -1 ? GameConstant.GAME_WIDTH - currenStair.stepNumber*size*1.5  : currenStair.stepNumber*size*1.5, currenStair.y - 70, 1);
         this.map.addChild(this.enemy);
         if(!this.player.isMoving) this.player.calPath(this.map.nextStair());
-        console.log("hit");
     }
     hitStair(){
         console.log("hit the wall");
