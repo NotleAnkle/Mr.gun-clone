@@ -1,5 +1,5 @@
 import { Graphics, Ticker } from "pixi.js";
-import { Enemy } from "../enemy/enemy";
+import { Enemy } from "./enemy";
 
 export class TallEnemy extends Enemy{
     constructor(x, y, direction){
