@@ -2,6 +2,7 @@ import { Application, Assets, Container, Graphics, RenderTexture, Sprite } from 
 import { manifest} from "./bundle/manifest";
 import { GameConstant } from "./gameConstant";
 import { PlayScene } from "./scenes/playScene";
+import { sound } from "@pixi/sound";
 
 export class Game {
     static init() {
@@ -17,8 +18,8 @@ export class Game {
         viewStyle.padding = "0px 300px"; 
 
         this._loadGameAssets().then((asset)=> {
-
             this._initScene();
+            sound.volumeAll = 0.05
             this.app.ticker.add(this.update, this);
         });
     }

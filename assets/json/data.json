@@ -5,7 +5,7 @@
             "speech": 0.2,
             "type": "rapid",
             "bulletNumber": 3,
-            "bulletRadius": 3,
+            "bulletRadius": 4,
             "bulletSpeech": 2,
             "deviation": 10,
             "damage": 5
@@ -25,9 +25,9 @@
         {
             "radius": 80,
             "speech": 0.4,
-            "type": "singer",
-            "bulletNumber": 1,
-            "bulletRadius": 2, 
+            "type": "rapid",
+            "bulletNumber": 2,
+            "bulletRadius": 3, 
             "bulletSpeech": 4,
             "deviation": 5,
             "damage": 10
@@ -78,9 +78,9 @@
     },
     "scout":
     {
-        "radius": 150,
+        "radius": 110,
         "speech": 0.3,
-        "type": "singer",
+        "type": "sniper",
         "bulletNumber": 1,
         "bulletRadius": 3, 
         "bulletSpeech": 7,

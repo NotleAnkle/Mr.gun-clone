@@ -24,8 +24,8 @@ export class PlayScene extends Container{
         document.body.addEventListener("keydown", (event) => {
             if (event.code === "Space") {
                 // this.player.calPath(this.map.nextStair());
-                this.player.changeClothes("hitman");
-                this.player.changeGun("scout");
+                this.player.changeClothes("gunner");
+                this.player.changeGun("sawed_off");
             }
         });
         this.on("pointerdown", () => {
@@ -59,7 +59,7 @@ export class PlayScene extends Container{
                 }
                 })
             }
-            if(bound.x < 0 || bound.x > 500) bulletsToRemove.push(bullet)
+            if(bound.x < 0 || bound.x > GameConstant.GAME_WIDTH) bulletsToRemove.push(bullet)
         });
         bulletsToRemove.forEach(bullet => { // loại bỏ các viên đạn va chạm đã được đánh dấu
             const index = bullets.indexOf(bullet);
@@ -74,7 +74,7 @@ export class PlayScene extends Container{
         this.enemy.destroy();
         const currenStair = this.map.stairs[this.map.currentIndex+2];
         const size = GameConstant.Step_Size;
-        this.enemy = new Enemy(this.player.direction == -1 ? GameConstant.GAME_WIDTH - currenStair.stepNumber*size*1.5  : currenStair.stepNumber*size*1.5, currenStair.y - 70, 1);
+        this.enemy = new Enemy(this.player.direction == -1 ? GameConstant.GAME_WIDTH - currenStair.stepNumber*size*2  : currenStair.stepNumber*size*2 - 40, currenStair.y - 70, 1);
         this.map.addChild(this.enemy);
         if(!this.player.isMoving) this.player.calPath(this.map.nextStair());
     }

@@ -86,6 +86,31 @@ export const manifest = {
                     srcs: '/assets/images/character/sprinter.png'
                 }
             ]
+        },
+        {
+            name: 'sound',
+            assets :[
+                {
+                    name: 'shotgunSound',
+                    srcs: '/assets/sounds/shotgun.mp3'
+                },
+                {
+                    name: 'revolerSound',
+                    srcs: '/assets/sounds/revoler.mp3'
+                },
+                {
+                    name: 'sniperSound',
+                    srcs: '/assets/sounds/sniper.mp3'
+                },
+                {
+                    name: 'pistolSound',
+                    srcs: '/assets/sounds/pistol.mp3'
+                },
+                {
+                    name: 'reloadSound',
+                    srcs: '/assets/sounds/reload.mp3'
+                },
+            ]
         }
     ],
 };

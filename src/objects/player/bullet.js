@@ -1,5 +1,6 @@
-import { Container, Graphics, Ticker } from "pixi.js";
+import { Assets, Container, Graphics, Ticker } from "pixi.js";
 import { GameConstant } from "../../gameConstant";
+import { sound } from "@pixi/sound";
 
 export class Bullet extends Container{
     constructor(parent){
@@ -24,16 +25,24 @@ export class Bullet extends Container{
 
         switch (this.type) {
             case "rapid":
-                this.x -= randomValue*Math.cos(this.beta*Math.PI/180) ;
-                this.y -= randomValue * Math.sin(this.beta*Math.PI/180) ; 
+            case "singer":
+                sound.play("pistolSound");
+                this.x -= randomValue * Math.cos(this.beta * Math.PI / 180);
+                this.y -= randomValue * Math.sin(this.beta * Math.PI / 180);
                 this.beta += randomValue / 5;
                 break;
             case "shotgun":
+                sound.play("shotgunSound");
                 this.beta += randomValue;
+                break;
+            case "sniper":
+                sound.play("sniperSound");
+                sound.play("reloadSound");
                 break;
             default:
                 break;
         }
+        
     }
     update(delta){
         if(this.destroyed){

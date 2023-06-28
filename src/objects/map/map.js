@@ -48,7 +48,7 @@ export class Map extends Container{
         this.genNewStair();
         this.moveDistance = this.stairs[this.currentIndex].stepNumber*25;
         if(this.currentIndex > 3){
-            for(let i = this.currentIndex - 3; i < this.currentIndex+5; i++){
+            for(let i = this.currentIndex - 3; i < this.currentIndex+8; i++){
             const alpha = 0.3 + (i - this.currentIndex)/10;
             this.stairs[i].updateShade(alpha);
             }
