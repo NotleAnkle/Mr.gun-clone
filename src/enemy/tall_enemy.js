@@ -1,24 +1,35 @@
 import { Graphics, Ticker } from "pixi.js";
-import { Enemy } from "../objects/enemy/enemy";
+import { Enemy } from "./enemy";
 
 
 export class TallEnemy extends Enemy{
-    constructor(x, y, direction){
+    constructor(x, y, direction, maxX, color){
         super(x, y);
         this.direction = direction;
         this.speed = this.direction * 13;
+        this.color = color;
+        this.maxX = maxX;
         // this.weapon.scale.x = direction;
         this.drawHead();
         this.drawBody();
         this.addChild(this.head, this.body);
+        this.position.set(x, y - this.height);
         this.equipWeapon();
         this.isJumping = false;
         this.gravity = 0.98;
         this.power = 8;
     }
     move(){
-        if (this.x > 360)
-            this.x += this.speed;
+        if (this.direction == -1)
+            if (this.x > this.maxX)
+                this.x += this.speed;
+            else
+                this.angle = 0;
+        if (this.direction == 1)
+            if (this.x < this.maxX)
+                this.x += this.speed;
+            else
+                this.angle = 0;
         if (this.isJumping) return;
         const jumpAt = this.y;
         this.isJumping = true;
@@ -47,8 +58,8 @@ export class TallEnemy extends Enemy{
     }
     drawBody(){
         this.body = new Graphics();
-        this.body.beginFill(0xFF0000); //red
-        this.body.drawRect(0, 20, 20, 50);
+        this.body.beginFill(this.color); //red
+        this.body.drawRect(0, 20, 20, 40);
         this.body.endFill();
     }
     equipWeapon(){

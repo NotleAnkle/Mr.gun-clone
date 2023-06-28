@@ -1,6 +1,5 @@
 import { Container, Graphics } from "pixi.js";
 import { Player } from "../objects/player/player";
-import { Enemy } from "../objects/enemy/enemy";
 import { Map } from "../objects/map/map";
 import { GameConstant } from "../gameConstant";
 import { ShortFatEnemy } from "../enemy/short_fat_enemy";
@@ -16,8 +15,9 @@ export class PlayScene extends Container{
     _init(){
         this.map = new Map(this, this.app);
         this.player = new Player(this.map);
-        this.enemy = new Enemy(50, 330, 2);
-        this.map.addChild(this.enemy)
+        this.enemy = this.createEnemy(-10, 400, 1, 70, this.randomColor());
+        // this.enemy = new ShortSkinnyEnemy(0, 400, 1, 70);
+        this.map.addChild(this.enemy);
 
         this.graphics = new Graphics();
         this.addChild(this.graphics);
@@ -32,7 +32,8 @@ export class PlayScene extends Container{
             }
         });
         this.on("pointerdown", () => {
-            if(!this.player.gun.isShot)this.player.gun.shoot()
+            if(!this.player.gun.isShot)
+                this.player.gun.shoot()
         })
     }
     update(dt) {
@@ -72,33 +73,47 @@ export class PlayScene extends Container{
             bullet.destroy();
         });   
     }
-    hitEnemy(){
-        this.map.removeChild(this.enemy);
-        this.enemy.destroy();
-        const currenStair = this.map.stairs[this.map.currentIndex+2];
-        const size = GameConstant.Step_Size;
+    createEnemy(x, y, direction, maxX, color){
         const run = Math.floor(Math.random() * 3) + 1;
-        const x = this.player.direction == -1 ? GameConstant.GAME_WIDTH - currenStair.stepNumber*size*2  : currenStair.stepNumber*size*2 - 40;
-        const y = currenStair.y - 70;
-        const direction = 1;
+        let enemy = null;
         switch (run) {
             case 1:
-                this.enemy = new ShortFatEnemy();
+                enemy = new ShortFatEnemy(x, y, direction, maxX, color);
                 break;
-            case 2: 
-                this.enemy = new ShortSkinnyEnemy();
+            case 2:
+                enemy = new ShortSkinnyEnemy(x, y, direction, maxX, color);
                 break;
             case 3:
-                this.enemy = new TallEnemy();
+                enemy = new TallEnemy(x, y, direction, maxX, color);
+                break;
             default:
                 break;
         }
-        this.enemy = new Enemy(this.player.direction == -1 ? GameConstant.GAME_WIDTH - currenStair.stepNumber*size*2  : currenStair.stepNumber*size*2 - 40, currenStair.y - 70, 1);
+        return enemy;
+    }
+    hitEnemy(){
+        this.map.removeChild(this.enemy);
+        // this.enemy.destroy();
+        const currenStair = this.map.stairs[this.map.currentIndex+2];
+        const size = GameConstant.Step_Size;
+        const run = Math.floor(Math.random() * 3) + 1;
+        const xMax = this.player.direction == -1 ? GameConstant.GAME_WIDTH - currenStair.stepNumber*size*2  : currenStair.stepNumber*size*2 - 40;
+        const x = (this.player.direction == -1) ? GameConstant.GAME_WIDTH : 0;
+        const y = currenStair.y;
+        const colorNextEnemy = this.randomColor();
+        this.enemy = this.createEnemy(x, y, this.player.direction, xMax, colorNextEnemy);
+        
         this.map.addChild(this.enemy);
         if(!this.player.isMoving) this.player.calPath(this.map.nextStair());
     }
     hitStair(){
         console.log("hit the wall");
+    }
+    randomColor(){
+        let red = Math.floor(Math.random() * 256);
+        let green = Math.floor(Math.random() * 256);
+        let blue = Math.floor(Math.random() * 256);
+        return `rgb(${red}, ${green}, ${blue})`;
     }
     checkCollision(objA, objB) {
         var a = objA.getBounds();

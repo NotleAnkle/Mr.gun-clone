@@ -19,7 +19,7 @@ export class Game {
 
         this._loadGameAssets().then((asset)=> {
             this._initScene();
-            sound.volumeAll = 0.05
+            sound.volumeAll = 0.05;
             this.app.ticker.add(this.update, this);
         });
     }

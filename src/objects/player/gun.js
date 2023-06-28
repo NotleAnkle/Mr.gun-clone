@@ -64,12 +64,14 @@ export class Gun extends Container{
         }
     }
     drawAimBar(){
-        if(!this.isShooting)this.runAngle();
+        if(!this.isShooting)
+            this.runAngle();
         this.graphics.clear();
         if(this.parent.isMoving){
             this.isIncresing = false;
         } 
-        else this.drawCircularSector(this.currentAnlge);
+        else 
+            this.drawCircularSector(this.currentAnlge);
     }
     drawCircularSector(angle) {
         let startAngle = Math.PI; 
