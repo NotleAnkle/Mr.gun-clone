@@ -3,6 +3,9 @@ import { Player } from "../objects/player/player";
 import { Enemy } from "../objects/enemy/enemy";
 import { Map } from "../objects/map/map";
 import { GameConstant } from "../gameConstant";
+import { ShortFatEnemy } from "../enemy/short_fat_enemy";
+import { ShortSkinnyEnemy } from "../enemy/short_skinny_enemy";
+import { TallEnemy } from "../enemy/tall_enemy";
 
 export class PlayScene extends Container{
     constructor(app){
@@ -74,6 +77,22 @@ export class PlayScene extends Container{
         this.enemy.destroy();
         const currenStair = this.map.stairs[this.map.currentIndex+2];
         const size = GameConstant.Step_Size;
+        const run = Math.floor(Math.random() * 3) + 1;
+        const x = this.player.direction == -1 ? GameConstant.GAME_WIDTH - currenStair.stepNumber*size*2  : currenStair.stepNumber*size*2 - 40;
+        const y = currenStair.y - 70;
+        const direction = 1;
+        switch (run) {
+            case 1:
+                this.enemy = new ShortFatEnemy();
+                break;
+            case 2: 
+                this.enemy = new ShortSkinnyEnemy();
+                break;
+            case 3:
+                this.enemy = new TallEnemy();
+            default:
+                break;
+        }
         this.enemy = new Enemy(this.player.direction == -1 ? GameConstant.GAME_WIDTH - currenStair.stepNumber*size*2  : currenStair.stepNumber*size*2 - 40, currenStair.y - 70, 1);
         this.map.addChild(this.enemy);
         if(!this.player.isMoving) this.player.calPath(this.map.nextStair());
