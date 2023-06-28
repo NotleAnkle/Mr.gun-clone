@@ -1,6 +1,7 @@
 import { Assets, Container, Graphics, Sprite, Ticker } from "pixi.js";
 import { GameConstant } from "../../gameConstant";
 import { Gun } from "./gun";
+import { sound } from "@pixi/sound";
 
 export class Player extends Container {
     constructor(parent){
@@ -16,8 +17,6 @@ export class Player extends Container {
         this.sprite = Sprite.from(Assets.get('camouflage'))
         this.sprite.anchor.set(0.5, 0);
         this.addChild(this.sprite);
-        this.ticker = Ticker.shared;
-        this.ticker.add(this.update, this);
     }
     _initGun(){
         this.gun = new Gun(this, 'aug');
@@ -28,7 +27,7 @@ export class Player extends Container {
         this.y = 450 - 55;
         this.zIndex = 1;
         this.direction = -1;
-        this.speech = 2;
+        this.speed = 4;
         this.isMoving = false;
         this.needFlip = false;
         this.canJump = true;
@@ -36,21 +35,22 @@ export class Player extends Container {
         this.maxJumpForce = 8;
         this.jumpForce = this.maxJumpForce;
         this.minY = this.y;
-        this.gravity = 0.5;
+        this.gravity = 0.3;
     }
     update(delta){
-        this.move();
+        this.move(delta);
         this.gun.update();
         this.sprite.scale.x = this.direction === 1 ? 1 : -1
     }
 
-    move() {
+    move(dt) {
         // Còn đoạn đường thứ 2 chưa đi thì tiếp tục di chuyển
         if (this.path2 > 0) {
             this.isMoving = true; // biến này hiện tại chưa sử dụng sau này để thêm đk cho player không thể bắn khi đang di chuyển
             if (this.path1 > 0) {
                 // Đi đoạn đường thứ 1 trước
-                this.path1 -= this.speech;
+                this.path1 -= this.speed * dt;
+                // console.log(dt);
             } else {
                 //Sau khi đi xong thì bắt đầu nhảy
                 if (this.jumpStep > 0) {
@@ -59,19 +59,20 @@ export class Player extends Container {
                         this.canJump = false; // biến thể hiện rằng nhân vật sẵn sàng đê nhảy
                         this.minY = this.y - GameConstant.Step_Size;
                         this.jumpForce = this.maxJumpForce; // Reset jump force when starting a new jump
+                        
                     }
                     this.jump();
                 } else { 
-                    this.path2 -= this.speech;
+                    this.path2 -= this.speed * dt;
                 }
             }
-            this.x += this.direction * this.speech;
+            this.x += this.direction * this.speed * dt;
         } else{
             if (this.needFlip) {
-            this.flip();
-            this.needFlip = false;
-            this.isMoving = false;
-            this.gun.isShot = false;
+                this.flip();
+                this.needFlip = false;
+                this.isMoving = false;
+                this.gun.isShot = false;
             }
             
         } 
@@ -93,6 +94,7 @@ export class Player extends Container {
             this.canJump = true;
             this.gravity = 0.5;
             this.y = this.minY;
+            sound.play("jumpSound");
         }
     }
     

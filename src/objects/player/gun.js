@@ -25,11 +25,11 @@ export class Gun extends Container{
 
         this.type = gunData[this.name].type;
         this.radius = gunData[this.name].radius;
-        this.speech = gunData[this.name].speech;
+        this.speed = gunData[this.name].speed;
         this.damage = gunData[this.name].damage;
         this.bulletRadius = gunData[this.name].bulletRadius;
         this.bulletNumber = gunData[this.name].bulletNumber;
-        this.bulletSpeech = gunData[this.name].bulletSpeech
+        this.bulletSpeed = gunData[this.name].bulletSpeed
         this.deviation = gunData[this.name].deviation;
 
         this.currentAnlge = 0;
@@ -51,13 +51,13 @@ export class Gun extends Container{
         if(this.isIncresing){
             
             if(this.currentAnlge  < this.maxAngle){
-                this.currentAnlge += this.speech;
+                this.currentAnlge += this.speed;
             }
             else this.isIncresing = false;
         }
         else {
             if(this.currentAnlge  > 0){
-                this.currentAnlge -= this.speech;
+                this.currentAnlge -= this.speed;
                 this.currentAnlge = this.currentAnlge < 0 ? 0 : this.currentAnlge
             }
             else this.isIncresing = true;

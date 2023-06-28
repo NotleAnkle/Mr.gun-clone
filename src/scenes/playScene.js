@@ -6,6 +6,7 @@ import { GameConstant } from "../gameConstant";
 import { ShortFatEnemy } from "../enemy/short_fat_enemy";
 import { ShortSkinnyEnemy } from "../enemy/short_skinny_enemy";
 import { TallEnemy } from "../enemy/tall_enemy";
+import { sound } from "@pixi/sound";
 
 export class PlayScene extends Container{
     constructor(app){
@@ -26,8 +27,8 @@ export class PlayScene extends Container{
         this.buttonMode = true;
         document.body.addEventListener("keydown", (event) => {
             if (event.code === "Space") {
-                // this.player.calPath(this.map.nextStair());
-                this.player.changeClothes("gunner");
+                this.player.calPath(this.map.nextStair());
+                this.player.changeClothes("cowboy");
                 this.player.changeGun("sawed_off");
             }
         });
@@ -38,7 +39,8 @@ export class PlayScene extends Container{
     update(dt) {
         this.graphics.clear();
         this.graphics.lineStyle(2, 0xFF0000);
-
+        this.player.update(dt);
+        this.map.update(dt);
         this.checkBullets(dt);
         
     }
@@ -81,19 +83,20 @@ export class PlayScene extends Container{
         const x = this.player.direction == -1 ? GameConstant.GAME_WIDTH - currenStair.stepNumber*size*2  : currenStair.stepNumber*size*2 - 40;
         const y = currenStair.y - 70;
         const direction = 1;
-        switch (run) {
-            case 1:
-                this.enemy = new ShortFatEnemy();
-                break;
-            case 2: 
-                this.enemy = new ShortSkinnyEnemy();
-                break;
-            case 3:
-                this.enemy = new TallEnemy();
-            default:
-                break;
-        }
-        this.enemy = new Enemy(this.player.direction == -1 ? GameConstant.GAME_WIDTH - currenStair.stepNumber*size*2  : currenStair.stepNumber*size*2 - 40, currenStair.y - 70, 1);
+        // switch (run) {
+        //     case 1:
+        //         this.enemy = new ShortFatEnemy(x,y,direction);
+        //         break;
+        //     case 2: 
+        //         this.enemy = new ShortSkinnyEnemy(x,y,direction);
+        //         break;
+        //     case 3:
+        //         this.enemy = new TallEnemy(x,y,direction);
+        //         break;
+        //     default:
+        //         break;
+        // }
+        this.enemy = new Enemy(x, y, direction);
         this.map.addChild(this.enemy);
         if(!this.player.isMoving) this.player.calPath(this.map.nextStair());
     }
