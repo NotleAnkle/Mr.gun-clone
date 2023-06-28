@@ -44,13 +44,13 @@ export class Bullet extends Container{
         }
         
     }
-    update(delta){
+    update(dt){
         if(this.destroyed){
             return;
         }
         const realspeed = this.speed* this.direction;
-        this.x += realspeed*Math.cos(this.beta*Math.PI/180);
-        this.y += realspeed * Math.sin(this.beta*Math.PI/180)
+        this.x += realspeed*Math.cos(this.beta*Math.PI/180) * dt;
+        this.y += realspeed * Math.sin(this.beta*Math.PI/180) * dt;
         this.drawBullet();
 
     }

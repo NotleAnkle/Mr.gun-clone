@@ -36,10 +36,11 @@ export class Player extends Container {
         this.jumpForce = this.maxJumpForce;
         this.minY = this.y;
         this.gravity = 0.3;
+
     }
     update(delta){
         this.move(delta);
-        this.gun.update();
+        this.gun.update(delta);
         this.sprite.scale.x = this.direction === 1 ? 1 : -1
     }
 
@@ -50,7 +51,7 @@ export class Player extends Container {
             if (this.path1 > 0) {
                 // Đi đoạn đường thứ 1 trước
                 this.path1 -= this.speed * dt;
-                // console.log(dt);
+                this.x += this.direction * this.speed * dt;
             } else {
                 //Sau khi đi xong thì bắt đầu nhảy
                 if (this.jumpStep > 0) {
@@ -59,14 +60,14 @@ export class Player extends Container {
                         this.canJump = false; // biến thể hiện rằng nhân vật sẵn sàng đê nhảy
                         this.minY = this.y - GameConstant.Step_Size;
                         this.jumpForce = this.maxJumpForce; // Reset jump force when starting a new jump
-                        
                     }
-                    this.jump();
+                    this.jump(dt);
                 } else { 
                     this.path2 -= this.speed * dt;
+                    this.x += this.direction * this.speed * dt;
                 }
             }
-            this.x += this.direction * this.speed * dt;
+            
         } else{
             if (this.needFlip) {
                 this.flip();
@@ -78,13 +79,14 @@ export class Player extends Container {
         } 
     }
     
-    jump() {
+    jump(dt) {
         if (this.isJumping) {
-            this.y += this.gravity;
-            this.gravity += 0.1;
+            this.x += this.direction * this.speed * dt * 0.5;
+            this.y += this.gravity*dt;
+            this.gravity += 0.1*dt;
             if (this.jumpForce > 0) {
-                this.jumpForce -= this.gravity;
-                this.y -= this.jumpForce;
+                this.jumpForce -= this.gravity*dt;
+                this.y -= this.jumpForce*dt;
                 if(this.y > this.minY) this.y = this.minY;
             } else {
                 this.isJumping = false;
@@ -92,7 +94,7 @@ export class Player extends Container {
         } else {
             this.jumpStep -= 1;
             this.canJump = true;
-            this.gravity = 0.5;
+            this.gravity = 0.3;
             this.y = this.minY;
             sound.play("jumpSound");
         }

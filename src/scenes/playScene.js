@@ -33,10 +33,11 @@ export class PlayScene extends Container{
             }
         });
         this.on("pointerdown", () => {
-            if(!this.player.gun.isShot)this.player.gun.shoot()
+            if(!this.player.gun.isShot)this.player.gun.shoot(this.dt)
         })
     }
     update(dt) {
+        this.dt = dt;
         this.graphics.clear();
         this.graphics.lineStyle(2, 0xFF0000);
         this.player.update(dt);

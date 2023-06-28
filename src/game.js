@@ -26,7 +26,7 @@ export class Game {
             this._initScene();
             this.loadingScene.destroy();
             this.startBackgroundMusic();
-            // this.app.ticker.maxFPS = 60;
+            this.app.ticker.maxFPS = 60;
             this.app.ticker.add(this.update, this);
         });
     }
@@ -57,7 +57,7 @@ export class Game {
 
     static update(dt){
         this.playScene.update(dt);
-        console.log(this.app.ticker.FPS);
+        // console.log(this.app.ticker.FPS);
         // console.log(dt);
     }
 
