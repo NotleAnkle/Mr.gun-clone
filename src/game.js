@@ -50,7 +50,7 @@ export class Game {
     static startBackgroundMusic() {
         sound.volumeAll = 1;
         const bgMusic = sound.find("bgMusic");
-        bgMusic.volume = 0.2;
+        bgMusic.volume = 0.3;
         bgMusic.autoPlay = true;
         bgMusic.play();
     }

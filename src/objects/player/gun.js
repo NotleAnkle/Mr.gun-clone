@@ -98,7 +98,6 @@ export class Gun extends Container{
         this.sprite.scale.x = this.parent.direction == 1 ? 1 : -1;
     }
     shoot(dt){
-        console.log(dt);
         if(this.type == "rapid"){
             new TWEEN.Tween({t: 0}).to({t: 1}, 100*1000*(1-dt)).repeat(this.bulletNumber).onRepeat(()=> {
                 this.bullets.push(new Bullet(this));  
