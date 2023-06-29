@@ -1,16 +1,18 @@
 import { Graphics } from "pixi.js";
-import { Enemy } from "../objects/enemy/enemy";
-
+import { Enemy } from "./enemy";
 
 export class ShortFatEnemy extends Enemy{
-    constructor(x, y, direction){
-        super(x, y);
-        this.speed = direction * 2.5;
+    constructor(x, y, direction, maxX, color){
+        super();
         this.direction = direction;
+        this.speed = this.direction * 2.5;
+        this.maxX = maxX;
+        this.color = color;
         // this.weapon.scale.x = direction;
         this.drawHead();
         this.drawBody();
         this.addChild(this.head, this.body);
+        this.position.set(x, y - this.height);
         this.equipWeapon();
         this.isLeanRight = true;
         this.isLeanLeft = false;
@@ -18,12 +20,17 @@ export class ShortFatEnemy extends Enemy{
         this.timer = 0;
     }
     move(){
-        if (this.x > 360){
-            this.x += this.speed;
-            
-        }else{
-            this.angle = 0;
-        }
+        if (this.direction == -1)
+            if (this.x > this.maxX)
+                this.x += this.speed;
+            else
+                this.angle = 0;
+        if (this.direction == 1)
+            if (this.x < this.maxX)
+                this.x += this.speed;
+            else
+                this.angle = 0;
+        
     }
     drawHead(){
         this.head = new Graphics();
@@ -33,7 +40,7 @@ export class ShortFatEnemy extends Enemy{
     }
     drawBody(){
         this.body = new Graphics();
-        this.body.beginFill(0xFF0000); //red
+        this.body.beginFill(this.color); //red
         this.body.drawRect(-5, 25, 50, 30);
         this.body.endFill();
     }
