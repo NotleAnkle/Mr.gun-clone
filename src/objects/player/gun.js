@@ -25,53 +25,52 @@ export class Gun extends Container{
 
         this.type = gunData[this.name].type;
         this.radius = gunData[this.name].radius;
-        this.speech = gunData[this.name].speech;
+        this.speed = gunData[this.name].speed;
         this.damage = gunData[this.name].damage;
         this.bulletRadius = gunData[this.name].bulletRadius;
         this.bulletNumber = gunData[this.name].bulletNumber;
-        this.bulletSpeech = gunData[this.name].bulletSpeech
+        this.bulletSpeed = gunData[this.name].bulletSpeed
         this.deviation = gunData[this.name].deviation;
 
         this.currentAnlge = 0;
         this.maxAngle = 45;
         this.isIncresing = true;
         this.isShot = false;
+        this.isShooting = false;
         this.bullets = [];
 
     }
-    update(delta){
+    update(dt){
         this.flip();
         this.x = 10*this.parent.direction;
-        this.drawAimBar();
+        this.drawAimBar(dt);
         this.dt += Ticker.shared.deltaMS;
         this.sprite.angle = this.parent.direction == -1 ? this.currentAnlge : -this.currentAnlge
         TWEEN.update(this.dt * 1000);
     }
-    runAngle(){
+    runAngle(dt){
         if(this.isIncresing){
             
             if(this.currentAnlge  < this.maxAngle){
-                this.currentAnlge += this.speech;
+                this.currentAnlge += this.speed * dt;
             }
             else this.isIncresing = false;
         }
         else {
             if(this.currentAnlge  > 0){
-                this.currentAnlge -= this.speech;
+                this.currentAnlge -= this.speed * dt;
                 this.currentAnlge = this.currentAnlge < 0 ? 0 : this.currentAnlge
             }
             else this.isIncresing = true;
         }
     }
-    drawAimBar(){
-        if(!this.isShooting)
-            this.runAngle();
+    drawAimBar(dt){
+        if(!this.isShooting)this.runAngle(dt);
         this.graphics.clear();
         if(this.parent.isMoving){
             this.isIncresing = false;
         } 
-        else 
-            this.drawCircularSector(this.currentAnlge);
+        else this.drawCircularSector(this.currentAnlge);
     }
     drawCircularSector(angle) {
         let startAngle = Math.PI; 
@@ -98,10 +97,9 @@ export class Gun extends Container{
     flip(){
         this.sprite.scale.x = this.parent.direction == 1 ? 1 : -1;
     }
-    shoot(){
-        
+    shoot(dt){
         if(this.type == "rapid"){
-            new TWEEN.Tween({t: 0}).to({t: 1}, 100*1000).repeat(this.bulletNumber).onRepeat(()=> {
+            new TWEEN.Tween({t: 0}).to({t: 1}, 100*1000*(1-dt)).repeat(this.bulletNumber).onRepeat(()=> {
                 this.bullets.push(new Bullet(this));  
                 this.isShooting = true;
             }).start(this.dt * 1000)

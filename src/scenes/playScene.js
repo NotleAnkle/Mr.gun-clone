@@ -1,5 +1,6 @@
 import { Container, Graphics } from "pixi.js";
 import { Player } from "../objects/player/player";
+import { Enemy } from "../objects/enemy/enemy";
 import { Map } from "../objects/map/map";
 import { GameConstant } from "../gameConstant";
 import { ShortFatEnemy } from "../enemy/short_fat_enemy";
@@ -21,9 +22,8 @@ export class PlayScene extends Container{
     _init(){
         this.map = new Map(this, this.app);
         this.player = new Player(this.map);
-        this.enemy = this.createEnemy(-10, 400, 1, 70, this.randomColor());
-        // this.enemy = new ShortSkinnyEnemy(0, 400, 1, 70);
-        this.map.addChild(this.enemy);
+        this.enemy = new Enemy(50, 330, 2);
+        this.map.addChild(this.enemy)
 
         this.graphics = new Graphics();
         this.addChild(this.graphics);
@@ -32,17 +32,18 @@ export class PlayScene extends Container{
         this.buttonMode = true;
         document.body.addEventListener("keydown", (event) => {
             if (event.code === "Space") {
-                // this.player.calPath(this.map.nextStair());
-                this.player.changeClothes("gunner");
+                this.player.calPath(this.map.nextStair());
+                this.player.changeClothes("cowboy");
                 this.player.changeGun("sawed_off");
             }
         });
         this.on("pointerdown", () => {
-            if(!this.player.gun.isShot)
-                this.player.gun.shoot()
+            if(!this.player.gun.isShot) 
+                this.player.gun.shoot(this.dt)
         })
     }
     update(dt) {
+        this.dt = dt;
         this.graphics.clear();
         this.graphics.lineStyle(2, 0xFF0000);
         this.player.update(dt);

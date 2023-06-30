@@ -15,7 +15,7 @@ export class Bullet extends Container{
 
         this.direction = this.parent.parent.direction // hướng bắn
         this.beta = this.direction == -1 ? this.parent.currentAnlge : Math.PI - this.parent.currentAnlge // góc lệch của đạn
-        this.speech = this.parent.bulletSpeech; // tốc độ bay
+        this.speed = this.parent.bulletSpeed; // tốc độ bay
         this.deviation = this.parent.deviation; // độ lệch của đạn 
         const randomValue = Math.random() * (2 * this.deviation) - this.deviation;
         this.type = this.parent.type; // kiểu bắn
@@ -44,13 +44,13 @@ export class Bullet extends Container{
         }
         
     }
-    update(delta){
+    update(dt){
         if(this.destroyed){
             return;
         }
-        const realSpeech = this.speech* this.direction;
-        this.x += realSpeech*Math.cos(this.beta*Math.PI/180);
-        this.y += realSpeech * Math.sin(this.beta*Math.PI/180)
+        const realspeed = this.speed* this.direction;
+        this.x += realspeed*Math.cos(this.beta*Math.PI/180) * dt;
+        this.y += realspeed * Math.sin(this.beta*Math.PI/180) * dt;
         this.drawBullet();
 
     }

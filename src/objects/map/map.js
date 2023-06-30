@@ -15,14 +15,12 @@ export class Map extends Container{
         this.color = this.randomColor();
         this.stairs = [];
         this.genStairs();
-        this.speech = 0.5;
-        this.ticker = Ticker.shared;
-        this.ticker.add(this.update, this);
+        this.speed = 1;
     }
     update(delta){
         if(this.moveDistance > 0){
-            this.y += this.speech;
-            this.moveDistance -= this.speech;
+            this.y += this.speed * delta;
+            this.moveDistance -= this.speed *delta;
         }
     }
     genStairs(){

@@ -91,6 +91,10 @@ export const manifest = {
             name: 'sound',
             assets :[
                 {
+                    name: 'bgMusic',
+                    srcs: '/assets/sounds/bg.mp3'
+                },
+                {
                     name: 'shotgunSound',
                     srcs: '/assets/sounds/shotgun.mp3'
                 },
@@ -109,6 +113,10 @@ export const manifest = {
                 {
                     name: 'reloadSound',
                     srcs: '/assets/sounds/reload.mp3'
+                },
+                {
+                    name: 'jumpSound',
+                    srcs: '/assets/sounds/jump.mp3'
                 },
             ]
         }
