@@ -29,7 +29,7 @@ export class MenuUI extends Container {
         this.gameReloadText.position.set(0, 50);
         this.gameOverBar.addChild(this.gameReloadText);
 
-        this.gameOverBar.position.set(600 / 2, 700 / 2);
+        this.gameOverBar.position.set(720 / 2, 1080 / 2);
 
 
         this.gameReloadText.on('pointerdown', () => {
@@ -59,20 +59,20 @@ export class MenuUI extends Container {
     
         // Button 'outfits'
         this.buttonOutfits = Sprite.from(Assets.get("outfits"));
-        this.buttonOutfits.x = this.buttonBlacklist.width + 40; // Khoảng cách giữa các button
+        this.buttonOutfits.x = this.buttonBlacklist.width + 50; // Khoảng cách giữa các button
         this.buttonContainer.addChild(this.buttonOutfits);
     
         // Button 'guns'
         this.buttonGuns = Sprite.from(Assets.get("gunstore"));
-        this.buttonGuns.x = this.buttonOutfits.x + this.buttonOutfits.width + 40; // Khoảng cách giữa các button
+        this.buttonGuns.x = this.buttonOutfits.x + this.buttonOutfits.width + 50; // Khoảng cách giữa các button
         this.buttonContainer.addChild(this.buttonGuns);
 
     
         const scaleIncreaseSpeed = 0.2; 
 
         // Thiết lập vị trí và căn giữa container chứa các button
-        this.buttonContainer.x = 60;
-        this.buttonContainer.y = 520;
+        this.buttonContainer.x = 140;
+        this.buttonContainer.y = 710;
       }
     
     _showMenuUI(){
