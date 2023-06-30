@@ -22,7 +22,6 @@ export class Game {
         this.app.stage.addChild(this.loadingScene);
 
         this._loadGameAssets().then((asset)=> {
-
             this._initScene();
             this.loadingScene.destroy();
             this.startBackgroundMusic();
@@ -57,8 +56,6 @@ export class Game {
 
     static update(dt){
         this.playScene.update(dt);
-        // console.log(this.app.ticker.FPS);
-        // console.log(dt);
     }
 
     static _initScene() {

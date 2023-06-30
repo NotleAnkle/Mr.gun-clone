@@ -7,13 +7,38 @@ import { ShortFatEnemy } from "../enemy/short_fat_enemy";
 import { ShortSkinnyEnemy } from "../enemy/short_skinny_enemy";
 import { TallEnemy } from "../enemy/tall_enemy";
 import { sound } from "@pixi/sound";
+import { Menu } from "../menu/menu";
+
+export const GameState = Object.freeze({
+    menu: 0,
+    playing: 1,
+    gameover: 2,
+})
 
 export class PlayScene extends Container{
     constructor(app){
         super();
         this.app = app;
         this._init();
+        this._initHandleTap();
+        this._initMenu();
+        this.gameState = GameState.menu;
     }
+
+    _initHandleTap(){
+        document.addEventListener("pointerdown", () => {
+            this.navigateToGunScene();
+        })
+    }
+
+
+    navigateToGunScene() {
+        if (this.gameState === GameState.menu) {
+            this._initPlay();
+            this.gameState = GameState.playing;
+        }
+    }
+
     _init(){
         this.map = new Map(this, this.app);
         this.player = new Player(this.map);
@@ -22,7 +47,10 @@ export class PlayScene extends Container{
 
         this.graphics = new Graphics();
         this.addChild(this.graphics);
+        
+    }
 
+    _initPlay(){
         this.interactive = true;
         this.buttonMode = true;
         document.body.addEventListener("keydown", (event) => {
@@ -37,6 +65,12 @@ export class PlayScene extends Container{
                 this.player.gun.shoot(this.dt)
         })
     }
+
+    _initMenu(){
+        this.menu = new Menu();
+        this.addChild(this.menu);
+    }
+
     update(dt) {
         this.dt = dt;
         this.graphics.clear();
@@ -44,7 +78,8 @@ export class PlayScene extends Container{
         this.player.update(dt);
         this.map.update(dt);
         this.checkBullets(dt);
-        
+        this.menu.update(dt);
+
     }
     checkBullets(dt){
         let bullets = this.player.gun.bullets;

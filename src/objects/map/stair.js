@@ -1,5 +1,6 @@
 import { Container, Graphics, RenderTexture, Sprite } from "pixi.js";
 import { GameConstant } from "../../gameConstant";
+import { Game } from "../../game";
 
 export class Stair extends Container{
     constructor(x, y , z, parent, direction, stepNumber){
@@ -49,7 +50,7 @@ export class Stair extends Container{
             this.graphics.drawRect(0, + i*size, size * (i + 1) + this.stepNumber*size*2, size);
         }
         this.graphics.drawRect(0, this.stepNumber * size, GameConstant.GAME_WIDTH, GameConstant.GAME_HEIGHT - this.y + this.stepNumber * size);
-        const texture = this.app.renderer.generateTexture(this.graphics);
+        const texture = Game.app.renderer.generateTexture(this.graphics);
         const sprite = new Sprite(texture);
         if(this.direction == 1){
             this.x + sprite.width/2;
