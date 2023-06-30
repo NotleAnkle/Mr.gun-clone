@@ -28,6 +28,9 @@ export class Enemy extends Container{
     //     console.log(this.weapon.position);
     //     this.addChild(this.weapon);
     // }
+    attack(player){
+
+    }
     update(){
 
     }

@@ -5,12 +5,18 @@ import { GameConstant } from "../gameConstant";
 import { ShortFatEnemy } from "../enemy/short_fat_enemy";
 import { ShortSkinnyEnemy } from "../enemy/short_skinny_enemy";
 import { TallEnemy } from "../enemy/tall_enemy";
+import { PlayUI } from "../objects/ui/playUI";
 
 export class PlayScene extends Container{
     constructor(app){
         super();
         this.app = app;
         this._init();
+        this._initUI();
+    }
+    _initUI(){
+        this.playUI = new PlayUI();
+        this.addChild(this.playUI);
     }
     _init(){
         this.map = new Map(this, this.app);
@@ -39,21 +45,36 @@ export class PlayScene extends Container{
     update(dt) {
         this.graphics.clear();
         this.graphics.lineStyle(2, 0xFF0000);
-
+        this.player.update(dt);
+        this.map.update(dt);
         this.checkBullets(dt);
         
+    }
+    checkBulletsOverEnemy(playerDirection, bullets){
+        let res = true;
+        if (this.player.gun.isShot)
+        bullets.forEach(bullet => {
+            if (playerDirection == -1)
+                res = res && bullet.x < this.player.getBounds().x;
+            else
+                res = res && bullet.x > this.player.getBounds().x;
+        })
+        return res;
     }
     checkBullets(dt){
         let bullets = this.player.gun.bullets;
         let bulletsToRemove = [];
         const steps = this.map.stairs[this.map.currentIndex + 1].stairSprites; // xét các bậc của cầu thang ngay trước mặt
+        let checkHitEnemy = false;
         bullets.forEach(bullet => {
+            // console.log(bullet.getBounds());
             bullet.update(dt);
             const bound = bullet.getBounds();
             // this.graphics.drawRect(bound.x, bound.y, bound.width, bound.height)
-            if(this.checkCollision(bullet, this.enemy.head) ){ // kiểm tra va chạm giữa đạn và địch
+            if(this.checkCollision(bullet, this.enemy.head) || this.checkCollision(bullet, this.enemy.body)){ // kiểm tra va chạm giữa đạn và địch
                 bulletsToRemove.push(bullet)
                 this.hitEnemy();
+                checkHitEnemy = true;
             }
             else {
                 steps.forEach(step => { // kiểm tra va trạm giữa đạn và cầu thang
@@ -65,6 +86,9 @@ export class PlayScene extends Container{
             }
             if(bound.x < 0 || bound.x > GameConstant.GAME_WIDTH) bulletsToRemove.push(bullet)
         });
+        // if (this.player.gun.isShot)
+        //     if (this.checkBulletsOverEnemy(this.player.direction, bullets) && !checkHitEnemy)
+        //         console.log("die");
         bulletsToRemove.forEach(bullet => { // loại bỏ các viên đạn va chạm đã được đánh dấu
             const index = bullets.indexOf(bullet);
             if (index > -1) {
