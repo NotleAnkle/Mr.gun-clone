@@ -27,7 +27,7 @@ export class PlayScene extends Container{
         this.buttonMode = true;
         document.body.addEventListener("keydown", (event) => {
             if (event.code === "Space") {
-                this.player.calPath(this.map.nextStair());
+                // this.player.calPath(this.map.nextStair());
                 this.player.changeClothes("cowboy");
                 this.player.changeGun("sawed_off");
             }
