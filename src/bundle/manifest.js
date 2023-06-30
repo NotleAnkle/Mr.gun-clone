@@ -119,6 +119,31 @@ export const manifest = {
                     srcs: '/assets/sounds/jump.mp3'
                 },
             ]
+        },
+        {
+            name: 'button',
+            assets :[
+                {
+                    name: 'blacklist',
+                    srcs: '/assets/images/button/blacklist.png'
+                },
+                {
+                    name: 'gunstore',
+                    srcs: '/assets/images/button/gunstore.png'
+                },
+                {
+                    name: 'outfits',
+                    srcs: '/assets/images/button/outfits.png'
+                },
+                {
+                    name: 'taptostart',
+                    srcs: '/assets/images/button/taptostart.png'
+                },
+                {
+                    name: 'mrgunbg',
+                    srcs: '/assets/images/button/mrgunbg.png'
+                },
+            ]
         }
     ],
 };

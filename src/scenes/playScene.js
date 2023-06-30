@@ -7,6 +7,7 @@ import { ShortFatEnemy } from "../enemy/short_fat_enemy";
 import { ShortSkinnyEnemy } from "../enemy/short_skinny_enemy";
 import { TallEnemy } from "../enemy/tall_enemy";
 import { sound } from "@pixi/sound";
+import { Menu } from "../menu/menu";
 
 export class PlayScene extends Container{
     constructor(app){
@@ -15,6 +16,8 @@ export class PlayScene extends Container{
         this._init();
     }
     _init(){
+
+
         this.map = new Map(this, this.app);
         this.player = new Player(this.map);
         this.enemy = new Enemy(50, 330, 2);
@@ -35,6 +38,32 @@ export class PlayScene extends Container{
         this.on("pointerdown", () => {
             if(!this.player.gun.isShot)this.player.gun.shoot(this.dt)
         })
+
+        this.menu = new Menu();
+        this.addChild(this.menu);
+
+        // let isMouseClicked = false; // Cờ để theo dõi xem đã có click chuột hay chưa
+        // this.app.view.addEventListener("pointerdown", () => {
+        // isMouseClicked = true; // Đánh dấu là đã có click chuột
+        // });
+
+        // const checkClickInterval = setInterval(() => {
+        // if (!isMouseClicked) {
+        //     this.menu.visible = true; // Nếu không có click chuột, vẫn hiển thị menu
+        // } else {
+        //     this.menu.visible = false; // Nếu có click chuột, biến mất menu
+        //     clearInterval(checkClickInterval); // Dừng kiểm tra
+        //     this._loadGameAssets().then((asset)=> {
+
+        //         this._initScene();
+        //         this.loadingScene.destroy();
+        //         this.startBackgroundMusic();
+        //         this.app.ticker.maxFPS = 60;
+        //         this.app.ticker.add(this.update, this);
+        //     });
+        // }
+        // }, 1000); // Đặt khoảng thời gian kiểm tra (tính bằng mili giây)
+
     }
     update(dt) {
         this.dt = dt;
@@ -43,7 +72,7 @@ export class PlayScene extends Container{
         this.player.update(dt);
         this.map.update(dt);
         this.checkBullets(dt);
-        
+        this.menu.update(dt);
     }
     checkBullets(dt){
         let bullets = this.player.gun.bullets;

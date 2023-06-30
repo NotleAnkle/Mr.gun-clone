@@ -4,6 +4,7 @@ import { GameConstant } from "./gameConstant";
 import { PlayScene } from "./scenes/playScene";
 import { sound } from "@pixi/sound";
 import { LoadingScene } from "./scenes/loadingScene";
+import { Menu } from "./menu/menu";
 
 export class Game {
     static init() {
@@ -23,12 +24,12 @@ export class Game {
 
         this._loadGameAssets().then((asset)=> {
 
-            this._initScene();
-            this.loadingScene.destroy();
-            this.startBackgroundMusic();
-            this.app.ticker.maxFPS = 60;
-            this.app.ticker.add(this.update, this);
-        });
+                    this._initScene();
+                    this.loadingScene.destroy();
+                    this.startBackgroundMusic();
+                    this.app.ticker.maxFPS = 60;
+                    this.app.ticker.add(this.update, this);
+                });
     }
 
     static async _loadGameAssets() {
@@ -57,6 +58,7 @@ export class Game {
 
     static update(dt){
         this.playScene.update(dt);
+
         // console.log(this.app.ticker.FPS);
         // console.log(dt);
     }
